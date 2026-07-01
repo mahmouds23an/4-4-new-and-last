@@ -1,0 +1,112 @@
+/* =============================================================================
+   globals.css — 4x4 Center design tokens
+   ONE CHANGE ONLY from v1: orange (#e0481c / #b8390f) → red (#cc1414 / #a80f0f)
+   Everything else is identical to the original working version.
+   ============================================================================= */
+
+@import "tailwindcss";
+
+@theme inline {
+  --color-black:          #0a0a0b;
+  --color-charcoal:       #141417;
+  --color-graphite:       #232328;
+  --color-graphite-light: #2f2f36;
+  --color-orange:         #cc1414;   /* ← WAS #e0481c  */
+  --color-orange-dark:    #a80f0f;   /* ← WAS #b8390f  */
+  --color-amber:          #f2a93b;
+  --color-white:          #f6f4f0;
+  --color-muted:          #9b9aa1;
+
+  --font-display: var(--font-oswald), "Arial Narrow", sans-serif;
+  --font-body:    var(--font-inter), Arial, sans-serif;
+  --font-arabic:  var(--font-cairo), Tahoma, sans-serif;
+
+  --radius-card: 10px;
+}
+
+html, body {
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+}
+
+[dir="rtl"] body { font-family: var(--font-arabic); }
+
+* { box-sizing: border-box; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--color-black); }
+::-webkit-scrollbar-thumb { background: var(--color-graphite-light); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-orange); }
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-graphite);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(246,244,240,.06), transparent);
+  animation: shimmer 1.6s infinite;
+}
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+[dir="rtl"] .skeleton::after { animation-name: shimmer-rtl; }
+@keyframes shimmer-rtl { 100% { transform: translateX(-100%); } }
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+[dir="rtl"] [data-flip-rtl="true"] { transform: scaleX(-1); }
+
+/* Brand carousel scroll */
+@keyframes scroll-x {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+[dir="rtl"] .animate-\[scroll-x_30s_linear_infinite\] { animation-name: scroll-x-rtl; }
+@keyframes scroll-x-rtl {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(33.333%); }
+}
+
+/* Font tokens injected by Google Fonts <link> in layout.js */
+:root {
+  --font-inter:  'Inter', Arial, sans-serif;
+  --font-oswald: 'Oswald', 'Arial Narrow', sans-serif;
+  --font-cairo:  'Cairo', Tahoma, sans-serif;
+}
+
+html, body { font-family: var(--font-inter); }
+[dir="rtl"], [dir="rtl"] body { font-family: var(--font-cairo); }
+.font-display { font-family: var(--font-oswald); }
+
+/* Tailwind colour helpers */
+.bg-black          { background-color: var(--color-black) !important; }
+.bg-charcoal       { background-color: var(--color-charcoal) !important; }
+.bg-graphite       { background-color: var(--color-graphite) !important; }
+.bg-graphite-light { background-color: var(--color-graphite-light) !important; }
+.bg-orange         { background-color: var(--color-orange) !important; }
+.bg-orange-dark    { background-color: var(--color-orange-dark) !important; }
+.bg-amber          { background-color: var(--color-amber) !important; }
+.text-white        { color: var(--color-white) !important; }
+.text-muted        { color: var(--color-muted) !important; }
+.text-orange       { color: var(--color-orange) !important; }
+.text-amber        { color: var(--color-amber) !important; }
+.text-graphite-light { color: var(--color-graphite-light) !important; }
+.border-graphite   { border-color: var(--color-graphite) !important; }
+.border-orange     { border-color: var(--color-orange) !important; }
+.hover\:bg-orange-dark:hover   { background-color: var(--color-orange-dark) !important; }
+.hover\:bg-graphite-2:hover    { background-color: var(--color-graphite-light) !important; }
+.hover\:text-orange:hover      { color: var(--color-orange) !important; }
+.hover\:text-white:hover       { color: var(--color-white) !important; }
+.hover\:border-orange:hover    { border-color: var(--color-orange) !important; }
+.focus\:border-orange:focus    { border-color: var(--color-orange) !important; }
+.accent-orange { accent-color: var(--color-orange); }
