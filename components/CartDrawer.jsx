@@ -11,6 +11,7 @@ import { X, ShoppingBag, Plus, Minus, Trash2, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useCart } from "@/lib/CartContext";
 import PlaceholderArt from "./PlaceholderArt";
+import Image from "next/image";
 
 export default function CartDrawer({ open, onClose }) {
   const { t, lang } = useLanguage();
@@ -18,6 +19,7 @@ export default function CartDrawer({ open, onClose }) {
 
   // Lock body scroll while open
   if (typeof document !== "undefined") {
+    // eslint-disable-next-line react-hooks/immutability
     document.body.style.overflow = open ? "hidden" : "";
   }
 
@@ -27,7 +29,9 @@ export default function CartDrawer({ open, onClose }) {
         <>
           {/* Backdrop */}
           <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={onClose}
             className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm"
           />
@@ -53,7 +57,11 @@ export default function CartDrawer({ open, onClose }) {
                   )}
                 </h2>
               </div>
-              <button onClick={onClose} className="text-muted hover:text-white" aria-label="Close cart">
+              <button
+                onClick={onClose}
+                className="text-muted hover:text-white"
+                aria-label="Close cart"
+              >
                 <X size={22} />
               </button>
             </div>
@@ -62,12 +70,18 @@ export default function CartDrawer({ open, onClose }) {
             <div className="flex-1 overflow-y-auto px-5 py-4">
               {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center gap-4 py-20 text-center">
-                  <ShoppingBag size={48} className="text-graphite-light" strokeWidth={1} />
+                  <ShoppingBag
+                    size={48}
+                    className="text-graphite-light"
+                    strokeWidth={1}
+                  />
                   <p className="text-sm text-muted">
                     {lang === "ar" ? "سلتك فارغة" : "Your cart is empty"}
                   </p>
-                  <button onClick={onClose}
-                    className="rounded-md bg-orange px-5 py-2.5 text-sm font-semibold text-white hover:bg-orange-dark">
+                  <button
+                    onClick={onClose}
+                    className="rounded-md bg-orange px-5 py-2.5 text-sm font-semibold text-white hover:bg-orange-dark"
+                  >
                     {lang === "ar" ? "تسوق الآن" : "Start Shopping"}
                   </button>
                 </div>
@@ -75,20 +89,30 @@ export default function CartDrawer({ open, onClose }) {
                 <div className="space-y-4">
                   <AnimatePresence>
                     {items.map((item) => (
-                      <motion.div key={item.id}
-                        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20, height: 0 }} transition={{ duration: 0.25 }}
-                        className="flex gap-3 rounded-xl border border-graphite bg-black p-3">
+                      <motion.div
+                        key={item.id}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20, height: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="flex gap-3 rounded-xl border border-graphite bg-black p-3"
+                      >
                         {/* Thumbnail */}
-                        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg">
-                          <PlaceholderArt
-                            icon={item.icon ?? "Gauge"}
-                            accent={item.accent ?? "orange"}
-                            className="h-full w-full"
-                            dense
-                          />
-                        </div>
-
+                        {item.image ? (
+                          <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-graphite">
+                            <Image
+                              src={item.image}
+                              alt={item.name[lang]}
+                              width={64}
+                              height={64}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-graphite">
+                            <PlaceholderArt />
+                          </div>
+                        )}
                         {/* Info */}
                         <div className="flex flex-1 flex-col justify-between gap-1 min-w-0">
                           <div>
@@ -120,7 +144,8 @@ export default function CartDrawer({ open, onClose }) {
                             </div>
                             {/* Price */}
                             <span className="font-display text-sm font-bold text-white">
-                              {(item.price * item.qty).toLocaleString()} {t.product.sar}
+                              {(item.price * item.qty).toLocaleString()}{" "}
+                              {t.product.sar}
                             </span>
                           </div>
                         </div>
@@ -159,15 +184,21 @@ export default function CartDrawer({ open, onClose }) {
                 </p>
 
                 {/* Checkout button */}
-                <Link href="/checkout" onClick={onClose}
-                  className="flex w-full items-center justify-center gap-2 rounded-md bg-orange py-3.5 font-display text-sm font-semibold text-white transition-colors hover:bg-orange-dark">
+                <Link
+                  href="/checkout"
+                  onClick={onClose}
+                  className="flex w-full items-center justify-center gap-2 rounded-md bg-orange py-3.5 font-display text-sm font-semibold text-white transition-colors hover:bg-orange-dark"
+                >
                   {lang === "ar" ? "إتمام الشراء" : "Proceed to Checkout"}
                   <ArrowRight size={16} data-flip-rtl="true" />
                 </Link>
 
                 {/* View cart link */}
-                <Link href="/cart" onClick={onClose}
-                  className="block w-full rounded-md border border-graphite py-2.5 text-center text-sm font-medium text-muted transition-colors hover:border-orange hover:text-white">
+                <Link
+                  href="/cart"
+                  onClick={onClose}
+                  className="block w-full rounded-md border border-graphite py-2.5 text-center text-sm font-medium text-muted transition-colors hover:border-orange hover:text-white"
+                >
                   {lang === "ar" ? "عرض السلة" : "View Full Cart"}
                 </Link>
               </div>

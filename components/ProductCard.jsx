@@ -37,7 +37,7 @@ export default function ProductCard({ product, index = 0 }) {
 
   const handleAdd = () => {
     if (!inStock) return;
-    addItem({ id, name, brand, price, icon, accent, qty: 1 });
+    addItem({ id, name, brand, price, icon, accent, qty: 1, image });
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   };
