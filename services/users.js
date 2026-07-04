@@ -1,17 +1,29 @@
-// users.js (service)
-// What this is: data access point for the current user / auth. login()
-// currently just simulates a network round trip and returns the mock user —
-// replace the body with a real POST /auth/login call once the Node/JWT
-// backend exists; the function signature and return shape stay the same.
+// users.js
+// Authentication services.
+// The backend uses HttpOnly Cookies, so no token is stored
+// in localStorage or sessionStorage.
 
 import { apiPost } from "./apiClient";
-import mockUsers from "@/data/users";
 
-export async function login({ identifier, password }) {
-  const apiData = await apiPost("/auth/login", { identifier, password });
-  if (apiData) return apiData;
+export async function register({
+  username,
+  first_name,
+  last_name,
+  email,
+  password,
+}) {
+  return await apiPost("/api/v1/auth/register", {
+    username,
+    first_name,
+    last_name,
+    email,
+    password,
+  });
+}
 
-  // Mock fallback: simulate latency, then "succeed" with the demo user.
-  await new Promise((resolve) => setTimeout(resolve, 600));
-  return { user: mockUsers[0], token: "mock-token" };
+export async function login(username, password) {
+  return await apiPost("/api/v1/auth/login", {
+    username,
+    password,
+  });
 }

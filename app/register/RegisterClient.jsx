@@ -1,21 +1,25 @@
 "use client";
-// LoginClient.jsx — /login page: split panel (brand art | form)
+// RegisterClient.jsx — /register page: split panel (brand art | form)
 
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, LogIn, Loader2 } from "lucide-react";
+import { Eye, EyeOff, UserPlus, Loader2 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
-import { login } from "@/services/users";
+import { register } from "@/services/users";
 import PlaceholderArt from "@/components/PlaceholderArt";
 import { useRouter } from "next/navigation";
 
-export default function LoginClient() {
+export default function RegisterClient() {
   const { t, lang } = useLanguage();
   const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
-  const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -24,9 +28,32 @@ export default function LoginClient() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!username.trim() || !password.trim()) {
+    if (
+      !username.trim() ||
+      !firstName.trim() ||
+      !lastName.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim()
+    ) {
       setError(
         lang === "ar" ? "يرجى ملء جميع الحقول" : "Please fill in all fields",
+      );
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError(
+        lang === "ar" ? "كلمتا المرور غير متطابقتين" : "Passwords do not match",
+      );
+      return;
+    }
+
+    if (!acceptTerms) {
+      setError(
+        lang === "ar"
+          ? "يجب الموافقة على الشروط والأحكام"
+          : "You must accept the terms.",
       );
       return;
     }
@@ -35,9 +62,21 @@ export default function LoginClient() {
     setError("");
 
     try {
-      await login(username, password);
+      await register({
+        username,
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password,
+      });
 
-      router.push("/");
+      alert(
+        lang === "ar"
+          ? "تم إنشاء الحساب بنجاح"
+          : "Account created successfully",
+      );
+
+      router.push("/login");
     } catch (err) {
       setError(
         err?.message ||
@@ -67,9 +106,9 @@ export default function LoginClient() {
 
         <div className="mx-auto w-full max-w-md">
           <h1 className="mb-1 font-display text-3xl font-bold text-white">
-            {t.login.title}
+            {t.register?.title}
           </h1>
-          <p className="mb-8 text-sm text-muted">{t.login.subtitle}</p>
+          <p className="mb-8 text-sm text-muted">{t.register?.subtitle}</p>
 
           {error && (
             <motion.div
@@ -84,58 +123,112 @@ export default function LoginClient() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="mb-1.5 block text-sm font-medium text-white">
-                {t.login.usernameLabel}
+                {t.register?.usernameLabel}
               </label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder={t.login.usernamePlaceholder}
+                placeholder={t.register?.usernamePlaceholder}
                 autoComplete="username"
                 className="w-full rounded-md border border-graphite bg-charcoal px-4 py-3 text-sm text-white placeholder:text-muted transition-colors focus:border-orange focus:outline-none"
               />
             </div>
 
             <div>
-              <div className="mb-1.5 flex items-center justify-between">
-                <label className="text-sm font-medium text-white">
-                  {t.login.passwordLabel}
-                </label>
-                <Link
-                  href="/forgot-password"
-                  className="text-xs text-orange hover:underline"
-                >
-                  {t.login.forgot}
-                </Link>
-              </div>
+              <label className="mb-1.5 block text-sm font-medium text-white">
+                First Name
+              </label>
+
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Enter your first name"
+                className="w-full rounded-md border border-graphite bg-charcoal px-4 py-3 text-sm text-white placeholder:text-muted focus:border-orange focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-white">
+                Last Name
+              </label>
+
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Enter your last name"
+                className="w-full rounded-md border border-graphite bg-charcoal px-4 py-3 text-sm text-white placeholder:text-muted focus:border-orange focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-white">
+                Email
+              </label>
+
+              <input
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="example@email.com"
+                className="w-full rounded-md border border-graphite bg-charcoal px-4 py-3 text-sm text-white placeholder:text-muted focus:border-orange focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-white">
+                Password
+              </label>
+
               <div className="relative">
                 <input
                   type={showPass ? "text" : "password"}
+                  autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder={t.login.passwordPlaceholder}
-                  autoComplete="current-password"
-                  className="w-full rounded-md border border-graphite bg-charcoal px-4 pe-12 py-3 text-sm text-white placeholder:text-muted transition-colors focus:border-orange focus:outline-none"
+                  placeholder="Enter your password"
+                  className="w-full rounded-md border border-graphite bg-charcoal px-4 pe-12 py-3 text-sm text-white placeholder:text-muted focus:border-orange focus:outline-none"
                 />
+
                 <button
                   type="button"
                   onClick={() => setShowPass((p) => !p)}
                   className="absolute inset-e-4 top-1/2 -translate-y-1/2 text-muted hover:text-white"
-                  aria-label="toggle password"
                 >
                   {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
 
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-white">
+                Confirm Password
+              </label>
+
+              <input
+                type={showPass ? "text" : "password"}
+                value={confirmPassword}
+                autoComplete="new-password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm your password"
+                className="w-full rounded-md border border-graphite bg-charcoal px-4 py-3 text-sm text-white placeholder:text-muted focus:border-orange focus:outline-none"
+              />
+            </div>
+
             <label className="flex cursor-pointer items-center gap-2.5">
               <input
                 type="checkbox"
-                checked={remember}
-                onChange={(e) => setRemember(e.target.checked)}
+                checked={acceptTerms}
+                onChange={(e) => setAcceptTerms(e.target.checked)}
                 className="h-4 w-4 accent-orange"
               />
-              <span className="text-sm text-muted">{t.login.rememberMe}</span>
+              <span className="text-sm text-muted">
+                {t.register?.acceptTerms}
+              </span>
             </label>
 
             <button
@@ -147,8 +240,7 @@ export default function LoginClient() {
                 <Loader2 size={18} className="animate-spin" />
               ) : (
                 <>
-                  <LogIn size={16} />
-                  {t.login.submit}
+                  <UserPlus size={16} /> {t.register?.submit}
                 </>
               )}
             </button>
@@ -156,7 +248,7 @@ export default function LoginClient() {
 
           <div className="relative my-6 flex items-center gap-3">
             <div className="flex-1 border-t border-graphite" />
-            <span className="text-xs text-muted">{t.login.or}</span>
+            <span className="text-xs text-muted">{t.register?.or}</span>
             <div className="flex-1 border-t border-graphite" />
           </div>
 
@@ -177,12 +269,12 @@ export default function LoginClient() {
           </div>
 
           <p className="mt-6 text-center text-sm text-muted">
-            {t.login.noAccount}{" "}
+            {t.register?.alreadyHaveAccount}{" "}
             <Link
-              href="/register"
+              href="/login"
               className="font-semibold text-orange hover:underline"
             >
-              {t.login.createAccount}
+              {t.register?.signIn}
             </Link>
           </p>
         </div>
@@ -209,10 +301,10 @@ export default function LoginClient() {
             </span>
           </div>
           <h2 className="mb-3 font-display text-3xl font-bold leading-tight text-white md:text-4xl">
-            {t.login.sideTitle}
+            {t.register?.sideTitle}
           </h2>
           <p className="max-w-xs text-sm leading-relaxed text-white/70">
-            {t.login.sideText}
+            {t.register?.sideText}
           </p>
         </div>
       </motion.div>
