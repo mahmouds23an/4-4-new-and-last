@@ -24,10 +24,11 @@ export default function BrandsCarousel({ brands }) {
                 <span className="font-display text-sm font-bold uppercase tracking-wider text-muted transition-colors hover:text-white">
                   {brand.logo ? (
                     <Image
+                      src={brand.logo}
+                      alt={brand.name}
                       width={100}
                       height={100}
-                      src={brand?.logo}
-                      alt={brand.name}
+                      className="h-auto w-auto object-contain"
                     />
                   ) : (
                     brand.name

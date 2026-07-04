@@ -6,12 +6,13 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, LogIn, Loader2 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
-import { login } from "@/services/users";
+import { useAuth } from "@/lib/AuthContext";
 import PlaceholderArt from "@/components/PlaceholderArt";
 import { useRouter } from "next/navigation";
 
 export default function LoginClient() {
   const { t, lang } = useLanguage();
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);

@@ -123,14 +123,17 @@ export default function RegisterClient() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="mb-1.5 block text-sm font-medium text-white">
-                {t.register?.usernameLabel}
+                Username
               </label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder={t.register?.usernamePlaceholder}
+                placeholder={
+                  lang === "ar" ? "أدخل اسم المستخدم" : "Enter your username"
+                }
                 autoComplete="username"
+                required
                 className="w-full rounded-md border border-graphite bg-charcoal px-4 py-3 text-sm text-white placeholder:text-muted transition-colors focus:border-orange focus:outline-none"
               />
             </div>
@@ -144,7 +147,10 @@ export default function RegisterClient() {
                 type="text"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Enter your first name"
+                placeholder={
+                  lang === "ar" ? "أدخل اسمك الأول" : "Enter your first name"
+                }
+                required
                 className="w-full rounded-md border border-graphite bg-charcoal px-4 py-3 text-sm text-white placeholder:text-muted focus:border-orange focus:outline-none"
               />
             </div>
@@ -158,7 +164,10 @@ export default function RegisterClient() {
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                placeholder="Enter your last name"
+                placeholder={
+                  lang === "ar" ? "أدخل اسم عائلتك" : "Enter your last name"
+                }
+                required
                 className="w-full rounded-md border border-graphite bg-charcoal px-4 py-3 text-sm text-white placeholder:text-muted focus:border-orange focus:outline-none"
               />
             </div>
@@ -174,7 +183,9 @@ export default function RegisterClient() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="example@email.com"
+                placeholder={
+                  lang === "ar" ? "أدخل بريدك الإلكتروني" : "Enter your email"
+                }
                 className="w-full rounded-md border border-graphite bg-charcoal px-4 py-3 text-sm text-white placeholder:text-muted focus:border-orange focus:outline-none"
               />
             </div>
@@ -190,7 +201,9 @@ export default function RegisterClient() {
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder={
+                    lang === "ar" ? "أدخل كلمة المرور" : "Enter your password"
+                  }
                   className="w-full rounded-md border border-graphite bg-charcoal px-4 pe-12 py-3 text-sm text-white placeholder:text-muted focus:border-orange focus:outline-none"
                 />
 
@@ -214,7 +227,9 @@ export default function RegisterClient() {
                 value={confirmPassword}
                 autoComplete="new-password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm your password"
+                placeholder={
+                  lang === "ar" ? "أكد كلمة المرور" : "Confirm your password"
+                }
                 className="w-full rounded-md border border-graphite bg-charcoal px-4 py-3 text-sm text-white placeholder:text-muted focus:border-orange focus:outline-none"
               />
             </div>

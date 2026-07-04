@@ -3,7 +3,7 @@
 // The backend uses HttpOnly Cookies, so no token is stored
 // in localStorage or sessionStorage.
 
-import { apiPost } from "./apiClient";
+import { apiPost, apiGet } from "./apiClient";
 
 export async function register({
   username,
@@ -26,4 +26,12 @@ export async function login(username, password) {
     username,
     password,
   });
+}
+
+export async function getCurrentUser() {
+  return await apiGet("/api/v1/auth/me");
+}
+
+export async function logout() {
+  return await apiPost("/api/v1/auth/logout");
 }

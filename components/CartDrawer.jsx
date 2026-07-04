@@ -33,7 +33,7 @@ export default function CartDrawer({ open, onClose }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 z-60 bg-black/70 backdrop-blur-sm"
           />
 
           {/* Drawer */}
@@ -42,7 +42,7 @@ export default function CartDrawer({ open, onClose }) {
             animate={{ x: 0 }}
             exit={{ x: lang === "ar" ? "-100%" : "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 35 }}
-            className="fixed inset-y-0 end-0 z-[70] flex w-full max-w-sm flex-col bg-charcoal shadow-2xl"
+            className="fixed inset-y-0 inset-e-0 z-70 flex w-full max-w-sm flex-col bg-charcoal shadow-2xl"
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-graphite px-5 py-4">
@@ -99,17 +99,17 @@ export default function CartDrawer({ open, onClose }) {
                       >
                         {/* Thumbnail */}
                         {item.image ? (
-                          <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-graphite">
+                          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-graphite">
                             <Image
                               src={item.image}
                               alt={item.name[lang]}
                               width={64}
                               height={64}
-                              className="h-full w-full object-cover"
+                              className="object-cover"
                             />
                           </div>
                         ) : (
-                          <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-graphite">
+                          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-graphite">
                             <PlaceholderArt />
                           </div>
                         )}
@@ -132,7 +132,7 @@ export default function CartDrawer({ open, onClose }) {
                               >
                                 <Minus size={12} />
                               </button>
-                              <span className="min-w-[20px] text-center text-sm font-medium text-white">
+                              <span className="min-w-5 text-center text-sm font-medium text-white">
                                 {item.qty}
                               </span>
                               <button

@@ -75,7 +75,7 @@ export default function ProductCard({ product, index = 0 }) {
             alt={name[lang]}
             width={300}
             height={300}
-            className="aspect-square w-full transition-transform duration-500 group-hover:scale-105"
+            className="aspect-square h-auto w-full transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
           <PlaceholderArt

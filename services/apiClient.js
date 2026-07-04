@@ -7,7 +7,7 @@
 // The backend uses HttpOnly Cookies, so every request includes credentials.
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-const REQUEST_TIMEOUT_MS = 6000;
+const REQUEST_TIMEOUT_MS = 60000;
 
 async function request(path, options = {}) {
   if (!API_BASE_URL) return null;
@@ -16,6 +16,8 @@ async function request(path, options = {}) {
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
+    console.log("Request:", `${API_BASE_URL}${path}`);
+
     const res = await fetch(`${API_BASE_URL}${path}`, {
       credentials: "include",
       signal: controller.signal,
