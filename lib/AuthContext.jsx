@@ -15,22 +15,13 @@ export function AuthProvider({ children }) {
 
   const refreshUser = async () => {
     const data = await getCurrentUser();
-    console.log(data);
-
     setUser(data ?? null);
-
     return data;
   };
 
   const login = async (username, password) => {
     const result = await loginService(username, password);
-
-    if (!result) {
-      throw new Error("Login failed");
-    }
-
-    await refreshUser();
-
+    const user = await refreshUser();
     return result;
   };
 
@@ -46,8 +37,9 @@ export function AuthProvider({ children }) {
     const initAuth = async () => {
       try {
         const data = await getCurrentUser();
-
-        setUser(data ?? null);
+        setUser(data);
+      } catch (err) {
+        setUser(null);
       } finally {
         setLoading(false);
       }

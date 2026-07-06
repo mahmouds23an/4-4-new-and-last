@@ -9,8 +9,9 @@ import { apiGet } from "./apiClient";
 import mockProducts from "@/data/products";
 
 export async function getAllProducts() {
-  const apiData = await apiGet("/products");
-  return apiData ?? mockProducts;
+  // const apiData = await apiGet("/products");
+  // return apiData ?? mockProducts;
+  return mockProducts;
 }
 
 export async function getBestSellers(limit = 5) {

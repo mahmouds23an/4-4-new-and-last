@@ -29,7 +29,7 @@ export async function login(username, password) {
 }
 
 export async function getCurrentUser() {
-  return await apiGet("/api/v1/auth/me");
+  return await apiGet("/api/v1/profile/");
 }
 
 export async function logout() {

@@ -7,8 +7,9 @@ import { apiGet } from "./apiClient";
 import mockCategories from "@/data/categories";
 
 export async function getAllCategories() {
-  const apiData = await apiGet("/categories");
-  return apiData ?? mockCategories;
+  // const apiData = await apiGet("/categories");
+  // return apiData ?? mockCategories;
+  return mockCategories;
 }
 
 export async function getCategoryBySlug(slug) {

@@ -10,7 +10,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 const REQUEST_TIMEOUT_MS = 60000;
 
 async function request(path, options = {}) {
-  if (!API_BASE_URL) return null;
+  if (!API_BASE_URL) throw new Error("API base URL is not defined");
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -31,16 +31,18 @@ async function request(path, options = {}) {
       ...options,
     });
 
-    const data = await res.json().catch(() => null);
+    const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      throw new Error(data?.message || "Request failed");
+      throw new Error(
+        data.detail || data.message || JSON.stringify(data) || "Request failed",
+      );
     }
 
     return data;
   } catch (error) {
     console.error("API Error:", error);
-    return null;
+    throw error;
   } finally {
     clearTimeout(timeout);
   }

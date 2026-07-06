@@ -8,6 +8,7 @@ import { apiGet } from "./apiClient";
 import mockOrders from "@/data/orders";
 
 export async function getOrders(userId) {
-  const apiData = await apiGet(`/orders?userId=${userId}`);
-  return apiData ?? mockOrders;
+  // const apiData = await apiGet(`/orders?userId=${userId}`);
+  // return apiData ?? mockOrders;
+  return mockOrders;
 }

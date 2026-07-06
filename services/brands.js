@@ -6,6 +6,7 @@ import { apiGet } from "./apiClient";
 import mockBrands from "@/data/brands";
 
 export async function getAllBrands() {
-  const apiData = await apiGet("/brands");
-  return apiData ?? mockBrands;
+  // const apiData = await apiGet("/brands");
+  // return apiData ?? mockBrands;
+  return mockBrands;
 }

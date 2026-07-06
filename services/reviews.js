@@ -6,6 +6,7 @@ import { apiGet } from "./apiClient";
 import mockReviews from "@/data/reviews";
 
 export async function getReviews() {
-  const apiData = await apiGet("/reviews");
-  return apiData ?? mockReviews;
+  // const apiData = await apiGet("/reviews");
+  // return apiData ?? mockReviews;
+  return mockReviews;
 }
