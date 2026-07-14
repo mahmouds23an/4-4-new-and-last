@@ -21,6 +21,7 @@ import MobileMenu from "./MobileMenu";
 import CartDrawer from "./CartDrawer";
 import categories from "@/data/categories";
 import { useAuth } from "@/lib/AuthContext";
+import AccountMenu from "./AccountMenu";
 
 const NAV_LINKS = [
   { key: "performance", slug: "performance-suspension" },
@@ -104,11 +105,7 @@ export default function Header() {
                 <span>...</span>
               </div>
             ) : user ? (
-              <button className="flex items-center gap-1.5 text-sm text-white transition-colors hover:text-orange">
-                <User size={20} />
-
-                <span>{user.first_name || user.username}</span>
-              </button>
+              <AccountMenu user={user} />
             ) : (
               <Link
                 href="/login"
