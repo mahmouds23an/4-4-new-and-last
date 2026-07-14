@@ -8,7 +8,7 @@ import { Eye, EyeOff, LogIn, Loader2 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useAuth } from "@/lib/AuthContext";
 import PlaceholderArt from "@/components/PlaceholderArt";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginClient() {
   const { t, lang } = useLanguage();
@@ -16,11 +16,12 @@ export default function LoginClient() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
-  const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next") || "/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +39,7 @@ export default function LoginClient() {
     try {
       await login(username, password);
 
-      router.push("/");
+      router.push(next);
     } catch (err) {
       setError(
         err?.message ||
@@ -102,12 +103,12 @@ export default function LoginClient() {
                 <label className="text-sm font-medium text-white">
                   {t.login.passwordLabel}
                 </label>
-                <Link
-                  href="/forgot-password"
-                  className="text-xs text-orange hover:underline"
+                <span
+                  className="cursor-not-allowed text-xs text-muted"
+                  title={lang === "ar" ? "قريباً" : "Coming soon"}
                 >
                   {t.login.forgot}
-                </Link>
+                </span>
               </div>
               <div className="relative">
                 <input
@@ -128,16 +129,6 @@ export default function LoginClient() {
                 </button>
               </div>
             </div>
-
-            <label className="flex cursor-pointer items-center gap-2.5">
-              <input
-                type="checkbox"
-                checked={remember}
-                onChange={(e) => setRemember(e.target.checked)}
-                className="h-4 w-4 accent-orange"
-              />
-              <span className="text-sm text-muted">{t.login.rememberMe}</span>
-            </label>
 
             <button
               type="submit"
@@ -169,8 +160,11 @@ export default function LoginClient() {
             ].map((s) => (
               <button
                 key={s.label}
-                className="flex items-center justify-center gap-2 rounded-md border border-graphite bg-charcoal py-3 text-sm text-white transition-colors hover:border-orange"
-                aria-label={`Sign in with ${s.label}`}
+                type="button"
+                disabled
+                className="flex cursor-not-allowed items-center justify-center gap-2 rounded-md border border-graphite bg-charcoal py-3 text-sm text-white/40 opacity-50"
+                aria-label={`Sign in with ${s.label} (coming soon)`}
+                title={lang === "ar" ? "قريباً" : "Coming soon"}
               >
                 <span className="font-bold">{s.icon || s.label[0]}</span>
               </button>

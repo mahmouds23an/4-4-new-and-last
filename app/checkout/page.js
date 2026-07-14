@@ -15,6 +15,7 @@ import {
 import { useLanguage } from "@/lib/LanguageContext";
 import { useCart } from "@/lib/CartContext";
 import PlaceholderArt from "@/components/PlaceholderArt";
+import RequireAuth from "@/components/RequireAuth";
 
 // ── Step definitions ────────────────────────────────────────────────────────
 const STEPS = {
@@ -214,7 +215,7 @@ function StepConfirmation({ lang, orderNum }) {
 }
 
 // ── Main Checkout component ─────────────────────────────────────────────────
-export default function CheckoutPage() {
+function CheckoutContent() {
   const { lang, t } = useLanguage();
   const { items, total, clearCart } = useCart();
 
@@ -401,5 +402,13 @@ export default function CheckoutPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <RequireAuth>
+      <CheckoutContent />
+    </RequireAuth>
   );
 }

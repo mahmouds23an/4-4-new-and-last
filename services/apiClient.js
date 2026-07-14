@@ -16,7 +16,9 @@ async function request(path, options = {}) {
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
-    console.log("Request:", `${API_BASE_URL}${path}`);
+    if (process.env.NODE_ENV === "development") {
+      console.log("Request:", `${API_BASE_URL}${path}`);
+    }
 
     const res = await fetch(`${API_BASE_URL}${path}`, {
       credentials: "include",
@@ -41,7 +43,9 @@ async function request(path, options = {}) {
 
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("API Error:", error);
+    }
     throw error;
   } finally {
     clearTimeout(timeout);

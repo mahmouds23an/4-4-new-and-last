@@ -2,6 +2,7 @@
 // What this is: the /login route. Exports metadata for SEO, then renders
 // the interactive LoginClient component that handles form state.
 
+import { Suspense } from "react";
 import LoginClient from "./LoginClient";
 
 export const metadata = {
@@ -11,5 +12,9 @@ export const metadata = {
 };
 
 export default function LoginPage() {
-  return <LoginClient />;
+  return (
+    <Suspense fallback={null}>
+      <LoginClient />
+    </Suspense>
+  );
 }

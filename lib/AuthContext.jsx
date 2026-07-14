@@ -21,7 +21,7 @@ export function AuthProvider({ children }) {
 
   const login = async (username, password) => {
     const result = await loginService(username, password);
-    const user = await refreshUser();
+    await refreshUser();
     return result;
   };
 

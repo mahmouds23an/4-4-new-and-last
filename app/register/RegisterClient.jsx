@@ -80,7 +80,9 @@ export default function RegisterClient() {
     } catch (err) {
       setError(
         err?.message ||
-          (lang === "ar" ? "بيانات الدخول غير صحيحة" : "Invalid credentials."),
+          (lang === "ar"
+            ? "تعذر إنشاء الحساب، حاول مرة أخرى"
+            : "Could not create your account. Please try again."),
       );
     } finally {
       setLoading(false);
@@ -199,6 +201,8 @@ export default function RegisterClient() {
                 <input
                   type={showPass ? "text" : "password"}
                   autoComplete="new-password"
+                  required
+                  minLength={8}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={
@@ -226,6 +230,7 @@ export default function RegisterClient() {
                 type={showPass ? "text" : "password"}
                 value={confirmPassword}
                 autoComplete="new-password"
+                required
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder={
                   lang === "ar" ? "أكد كلمة المرور" : "Confirm your password"
@@ -275,8 +280,11 @@ export default function RegisterClient() {
             ].map((s) => (
               <button
                 key={s.label}
-                className="flex items-center justify-center gap-2 rounded-md border border-graphite bg-charcoal py-3 text-sm text-white transition-colors hover:border-orange"
-                aria-label={`Sign in with ${s.label}`}
+                type="button"
+                disabled
+                className="flex cursor-not-allowed items-center justify-center gap-2 rounded-md border border-graphite bg-charcoal py-3 text-sm text-white/40 opacity-50"
+                aria-label={`Sign up with ${s.label} (coming soon)`}
+                title={lang === "ar" ? "قريباً" : "Coming soon"}
               >
                 <span className="font-bold">{s.icon || s.label[0]}</span>
               </button>

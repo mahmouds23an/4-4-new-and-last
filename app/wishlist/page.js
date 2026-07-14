@@ -8,9 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useCart } from "@/lib/CartContext";
 import PlaceholderArt from "@/components/PlaceholderArt";
+import RequireAuth from "@/components/RequireAuth";
 import mockProducts from "@/data/products";
 
-export default function WishlistPage() {
+function WishlistContent() {
   const { lang, t } = useLanguage();
   const { addItem } = useCart();
   // Demo: use first 3 products as pre-saved wishlist items
@@ -94,5 +95,13 @@ export default function WishlistPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function WishlistPage() {
+  return (
+    <RequireAuth>
+      <WishlistContent />
+    </RequireAuth>
   );
 }
